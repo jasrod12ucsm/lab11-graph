@@ -53,7 +53,7 @@ public class GraphListEdge<V, E> {
     }
 
     public void bfs(V data) {
-        VertexObj<V, E> vertex = findVertex(data);
+        VertexObj<V, E> vertex = searchVertex(data);
         if (vertex != null) {
             ArrayList<VertexObj<V, E>> visited = new ArrayList<VertexObj<V, E>>();
             bfsTraversal(vertex, visited);
