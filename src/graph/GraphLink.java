@@ -30,6 +30,25 @@ public class GraphLink<E> {
         this.listVertex.insertLast(newVertex);
     }
 
+    public void insertEdge(E origenVertice, E destinoVertice) {
+        Vertex<E> origen = this.listVertex.searchObj(new Vertex<E>(origenVertice));
+        Vertex<E> destino = this.listVertex.searchObj(new Vertex<E>(destinoVertice));
+
+        if (origen == null || destino == null) {
+            System.out.println("Error: Los vértices de origen y/o destino no existen en el grafo.");
+        } else {
+            if (origen.listAdj.search(new Edge<>(destino)) != -1) {
+                System.out.println("Error: La arista ya fue insertada previamente en el grafo.");
+            } else {
+                origen.listAdj.insertFirst(new Edge<E>(destino));
+                destino.listAdj.insertFirst(new Edge<E>(origen));
+                System.out.println(
+                        "Se ha añadido correctamente la arista entre " + origenVertice + " y " + destinoVertice + ".");
+            }
+        }
+    }
+
+
     public void insertEdgeWeight(E v, E z, int weight) {
         Vertex<E> vertexV = this.listVertex.searchObj(new Vertex<E>(v));
         Vertex<E> vertexZ = this.listVertex.searchObj(new Vertex<E>(z));
@@ -122,7 +141,7 @@ public class GraphLink<E> {
         return stack;
     }
 
-    public E findVertex(E vertex) {
+    public E searchVertex(E vertex) {
         Vertex<E> data = new Vertex<E>(vertex);
         int foundVertex = this.listVertex.search(data);
 
