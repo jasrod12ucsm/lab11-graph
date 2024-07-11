@@ -17,8 +17,8 @@ public class GraphListEdge<V, E> {
     }
 
     public void insertEdge(V data1, V data2, E info) {
-        VertexObj<V, E> vertex1 = findVertex(data1);
-        VertexObj<V, E> vertex2 = findVertex(data2);
+        VertexObj<V, E> vertex1 = searchVertex(data1);
+        VertexObj<V, E> vertex2 = searchVertex(data2);
 
         if (vertex1 != null && vertex2 != null) {
             EdgeObj<V, E> edge = new EdgeObj<V, E>(vertex1, vertex2, info, edges.size());
@@ -28,7 +28,7 @@ public class GraphListEdge<V, E> {
         }
     }
 
-    public VertexObj<V, E> findVertex(V toFind) {
+    public VertexObj<V, E> searchVertex(V toFind) {
         for (VertexObj<V, E> vertex : vertices) {
             if (vertex.getInfo().equals(toFind)) {
                 return vertex;
@@ -37,9 +37,9 @@ public class GraphListEdge<V, E> {
         return null;
     }
 
-    public boolean findEdge(V data1, V data2) {
-        VertexObj<V, E> vertex1 = findVertex(data1);
-        VertexObj<V, E> vertex2 = findVertex(data2);
+    public boolean searchEdge(V data1, V data2) {
+        VertexObj<V, E> vertex1 = searchVertex(data1);
+        VertexObj<V, E> vertex2 = searchVertex(data2);
 
         if (vertex1 != null && vertex2 != null) {
             for (EdgeObj<V, E> edge : edges) {
