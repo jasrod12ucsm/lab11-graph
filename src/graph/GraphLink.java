@@ -30,6 +30,69 @@ public class GraphLink<E> {
         this.listVertex.insertLast(newVertex);
     }
 
+    public ArrayList<E> bfsPath(E startVertex, E endVertex) throws ExceptionIsEmpty {
+        Vertex<E> start = this.listVertex.searchObj(new Vertex<E>(startVertex));
+        Vertex<E> end = this.listVertex.searchObj(new Vertex<E>(endVertex));
+
+        if (start == null || end == null) {
+            System.out.println("Uno de los vértices no existe.");
+            return null;
+        }
+
+        Map<Vertex<E>, Vertex<E>> predecessors = new HashMap<>();
+        Queue<Vertex<E>> queue = new QueueLink<>();
+        ListLinked<Vertex<E>> visited = new ListLinked<>();
+
+        queue.enqueue(start);
+        visited.insertLast(start);
+
+        boolean found = false;
+
+        while (!queue.isEmpty() && !found) {
+            Vertex<E> current = queue.dequeue();
+
+            Node<Edge<E>> adjNode = current.listAdj.getFirst();
+            while (adjNode != null) {
+                Edge<E> edge = adjNode.getData();
+                Vertex<E> neighbor = edge.getRefDest();
+
+                if (visited.search(neighbor) == -1) {
+                    predecessors.put(neighbor, current);
+                    visited.insertLast(neighbor);
+                    queue.enqueue(neighbor);
+
+                    if (neighbor.equals(end)) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                adjNode = adjNode.getNext();
+            }
+        }
+
+        // Reconstruir el camino si se encontró el vértice final
+        if (found) {
+            ArrayList<E> path = new ArrayList<>();
+            Vertex<E> step = end;
+            while (step != null) {
+                path.add(step.getData());
+                step = predecessors.get(step);
+            }
+
+            // Invertir el camino manualmente
+            ArrayList<E> reversedPath = new ArrayList<>();
+            for (int i = path.size() - 1; i >= 0; i--) {
+                reversedPath.add(path.get(i));
+            }
+
+            return reversedPath;
+        } else {
+            System.out.println("No se encontró un camino entre los vértices.");
+            return null;
+        }
+    }
+
     public void insertEdge(E origenVertice, E destinoVertice) {
         Vertex<E> origen = this.listVertex.searchObj(new Vertex<E>(origenVertice));
         Vertex<E> destino = this.listVertex.searchObj(new Vertex<E>(destinoVertice));
@@ -47,7 +110,6 @@ public class GraphLink<E> {
             }
         }
     }
-
 
     public void insertEdgeWeight(E v, E z, int weight) {
         Vertex<E> vertexV = this.listVertex.searchObj(new Vertex<E>(v));
